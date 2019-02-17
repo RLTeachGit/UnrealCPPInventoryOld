@@ -6,32 +6,52 @@
 
 #include "Runtime/UMG/Public/UMG.h"
 #include "Runtime/UMG/Public/Components/WidgetComponent.h" //For UWidget
+#include "Runtime/Engine/Classes/Components/TextRenderComponent.h" //For Text Render
 
-#include "Components/ActorComponent.h"
+#include "Runtime/Core/Public/Math/Color.h" //Needed for FColor
+#include "GameFramework/Actor.h" //Now needed as Unreal has gone to a minimal include system
+
+#include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
+#include "CoreMinimal.h"
+#include "Components/SceneComponent.h"
 #include "ThoughtBubble.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UNREALCPPINVENTORY_API UThoughtBubble : public UActorComponent
-{
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class UNREALCPPINVENTORY_API UThoughtBubble : public USceneComponent {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
-	UThoughtBubble();
+	UThoughtBubble(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+private:
+	const	char* CategoryName = "ThoughtBubble"; //This is there this will show in IDE
+
+	//Undo parent scaling
+	void	UndoTransform();
+
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-public:
+	UPROPERTY()
+	UWidgetComponent* BubbleWidget;
 
-    UWidgetComponent* BubbleWidget;
-    
+	UPROPERTY()
+	UTextRenderComponent* BubbleText;
 
-	
+	UFUNCTION(BlueprintCallable, Category = CategoryName) //Make this accesible from BP's
+	void	SetText(FText Text);
+
+	UFUNCTION(BlueprintPure, Category = CategoryName)
+	FText	GetText();
+
+	UFUNCTION(BlueprintCallable, Category = CategoryName)
+	void	SetColour(FColor Colour);
+
 };

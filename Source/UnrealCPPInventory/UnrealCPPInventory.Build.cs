@@ -8,6 +8,8 @@ public class UnrealCPPInventory : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" ,"Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
-	}
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+        PublicDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore" }); //Needed for Widgets
+
+    }
 }
