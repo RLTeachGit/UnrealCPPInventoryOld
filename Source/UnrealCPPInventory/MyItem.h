@@ -34,7 +34,7 @@ public:
 
 
 	UFUNCTION(BlueprintNativeEvent)
-		void	OnAdd(UMyInventory* Inventory); //Can override in BP
+    void	OnAdd(UMyInventory* Inventory); //Can override in BP
 	virtual void	OnAdd_Implementation(UMyInventory* Inventory); //C++ parent 
 
 protected:
