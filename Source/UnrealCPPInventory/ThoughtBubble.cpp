@@ -46,10 +46,6 @@ void	UThoughtBubble::UndoTransform()
 		BubbleWidget->SetWorldScale3D(FVector::OneVector); //Unscale from parent transform
 		BubbleWidget->SetWorldLocation(tParentActor->GetActorLocation() + GetRelativeTransform().GetLocation()); //Recalculate offset to undo Parent Scale
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("No Parent"));
-	}
 }
 
 // Called when the game starts

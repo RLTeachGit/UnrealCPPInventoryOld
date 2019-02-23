@@ -2,6 +2,11 @@
 
 #pragma once
 
+
+
+class UMyInventory;
+class UMyItem; //Forward reference
+
 #include "CoreMinimal.h"
 #include <EngineGlobals.h> //Needed for GEngine->AddOnScreenDebugMessage()
 #include <Runtime/Engine/Classes/Engine/Engine.h> //Needed for GEngine->AddOnScreenDebugMessage()
@@ -49,6 +54,6 @@ protected: //Internal variables
 	AActor* Actor;		//Get link to actor who owns us and cache
 
 private:
-	float InventoryTick = 1.0f;
-	float InventoryDeltaTime = 0.0f;
+	float InventoryTick;
+	float InventoryDeltaTime;
 };
