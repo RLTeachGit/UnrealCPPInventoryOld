@@ -4,25 +4,30 @@
 
 
 // Sets default values for this component's properties
-UMovingPlatform::UMovingPlatform(const FObjectInitializer& ObjectInitializer)
+UMovingPlatform::UMovingPlatform(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-//Make the root object moveable, or we wont be able to move it
-void     UMovingPlatform::SetMovable()
+void UMovingPlatform::PostInitProperties()
 {
-	AActor* tActor = GetOwner(); //Get Owning Actor & cache
-	if(IsValid(tActor))  //Make sure Actor is set
+    Super::PostInitProperties(); //Make sure parent version called too
+    Actor = GetOwner(); //Get Owning Actor & cache
+    if(IsValid(Actor))
     {
-        if(!tActor->IsRootComponentMovable()) //May already be moveable
+        if(!Actor->IsRootComponentMovable()) //Check its moveable
         {
-            USceneComponent* tRoot = tActor->GetRootComponent(); //Make sure root is movable
-            UE_LOG(LogTemp, Warning, TEXT("Making %s Movable"),*tActor->GetName());
-            tRoot->SetMobility(EComponentMobility::Movable); //Allow it to move
+            if(IsValid(GEngine))
+            {
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%s must be set to Moveable"),*Actor->GetName()));
+            }
         }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning,TEXT("PostInitProperties:No Actor Yet"));
     }
 }
 
@@ -30,19 +35,18 @@ void     UMovingPlatform::SetMovable()
 void UMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-	SetMovable();
-	AActor* tActor = GetOwner(); //Get Owning Actor & cache
-	if (IsValid(tActor))  //Make sure Actor is set
+	if (IsValid(Actor))  //Make sure Actor is set
 	{
-		if (FloatTimeLine) {
+		if (IsValid(FloatTimeLine)) {
+            FOnTimelineFloat tProgressFunction;    //Callback Wrapper for timeline
 
-			ProgressFunction.BindUFunction(this, FName("TimelineTick")); //Set tick function (as text) to call
+			tProgressFunction.BindUFunction(this, FName("TimelineTick")); //Set tick function (as text) to call
 
-			Timeline.AddInterpFloat(FloatTimeLine, ProgressFunction); //Link to Timeline tick
-			Timeline.SetLooping(true);
+			Timeline.AddInterpFloat(FloatTimeLine, tProgressFunction); //Link to Timeline tick
+			Timeline.SetLooping(true); //Loop TimeLine
 
-			StartLocation = EndLocation = tActor->GetActorLocation();
-			EndLocation.Z += Height;
+			StartLocation = EndLocation = Actor->GetActorLocation(); //Initial position
+			EndLocation.Z += Height; //Add Height
 
 			Timeline.PlayFromStart(); //reset to start
 		}
@@ -56,11 +60,10 @@ void UMovingPlatform::BeginPlay()
 
 void UMovingPlatform::TimelineTick(float Value) 
 {
-	AActor* tActor = GetOwner(); //Get Owning Actor & cache
-	if (IsValid(tActor))  //Make sure Actor is set
+	if (IsValid(Actor) && Actor->IsRootComponentMovable())  //Make sure Actor is set & can move
 	{
-		FVector tNewPosition = FMath::Lerp(StartLocation, EndLocation, Value);
-		tActor->SetActorLocation(tNewPosition);
+		FVector tNewPosition = FMath::Lerp(StartLocation, EndLocation, Value); //Will take Position from Start to End
+		Actor->SetActorLocation(tNewPosition); //Reposition Actor
 	}
 }
 

@@ -24,6 +24,7 @@ class UNREALCPPINVENTORY_API UThoughtBubble : public USceneComponent {
 public:
 	// Sets default values for this component's properties
 	UThoughtBubble(const FObjectInitializer& ObjectInitializer);
+    virtual void PostInitProperties() override;
 
 protected:
 	// Called when the game starts

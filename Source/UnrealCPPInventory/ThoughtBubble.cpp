@@ -4,7 +4,7 @@
 
 
 // Sets default values for this component's properties
-UThoughtBubble::UThoughtBubble(const FObjectInitializer& ObjectInitializer)
+UThoughtBubble::UThoughtBubble(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -23,11 +23,10 @@ UThoughtBubble::UThoughtBubble(const FObjectInitializer& ObjectInitializer)
 
 			BubbleText->AttachToComponent(BubbleWidget, FAttachmentTransformRules::KeepRelativeTransform); //Make Text a child of UIWidget
 			BubbleText->SetVisibility(true);
-			BubbleText->SetText("Thought");
+            BubbleText->SetText(FText::FromString("Tought"));
 			BubbleText->SetVerticalAlignment(EVRTA_TextCenter);	//Center
 			BubbleText->SetHorizontalAlignment(EHTA_Center);
 
-			UndoTransform();
 
 			return; //All is well
 		}
@@ -35,12 +34,17 @@ UThoughtBubble::UThoughtBubble(const FObjectInitializer& ObjectInitializer)
     UE_LOG(LogTemp, Error, TEXT("Bubble Widget failed"));
 }
 
+//Called when most other things have been set up, such as the Actor we are linked to
+void UThoughtBubble::PostInitProperties()
+{
+    Super::PostInitProperties(); //Must call parent version or Kaboom
+    UndoTransform();
+}
 
 //Undo Parent transform so Text does nto get squished
 void	UThoughtBubble::UndoTransform()
 {
 	AActor* tParentActor = GetAttachmentRootActor(); //Get parent
-
 	if (IsValid(tParentActor) && IsValid(BubbleWidget))
 	{
 		BubbleWidget->SetWorldScale3D(FVector::OneVector); //Unscale from parent transform
@@ -74,9 +78,6 @@ FText UThoughtBubble::GetText()
 {
 	return BubbleText->Text;
 }
-
-
-
 //BP compatible set text colour routine
 void	UThoughtBubble::SetColour(FColor Colour)
 {
