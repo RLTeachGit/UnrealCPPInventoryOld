@@ -37,13 +37,24 @@ void UMyInventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	}
 }
 
+
+bool UMyInventory::RemoveItem(UMyItem * Item) {
+    if (Item != nullptr) {
+        Items.Remove(Item); //Remove item from Item array
+        Item->OnAdd(this); //Give item a link back to the owning actor
+        return    true;
+    }
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("RemoveItem(): Invalid null Item for %s"), *Actor->GetActorLabel()));
+    return false;    //No successful
+}
+
 bool UMyInventory::AddItem(UMyItem * Item) {
 	if (Item != nullptr) {
 		Items.Add(Item); //Add item to Item array
 		Item->OnAdd(this); //Give item a link back to the owning actor
 		return	true;
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Invalid null Item for %s"), *Actor->GetActorLabel()));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("AddItem():Invalid null Item for %s"), *Actor->GetActorLabel()));
 	return false;	//No successful
 }
 

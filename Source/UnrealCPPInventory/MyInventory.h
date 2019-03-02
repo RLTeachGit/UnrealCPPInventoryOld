@@ -36,17 +36,20 @@ public:
 	//Added code
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool AddItem(UMyItem* Item);
+    bool AddItem(UMyItem* Item);
+
+    UFUNCTION(BlueprintCallable, Category = "Inventory")
+    bool RemoveItem(UMyItem* Item);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		int	 GetWeights();
+    int	 GetWeights();
 
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		int	 GetCount();
+    UFUNCTION(BlueprintCallable, Category = "Inventory")
+    int	 GetCount();
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory") //Expose Array of items in Blueprints
-		TArray <UMyItem*> Items;
+    TArray <UMyItem*> Items;
 
 	AActor* GetActor();
 
