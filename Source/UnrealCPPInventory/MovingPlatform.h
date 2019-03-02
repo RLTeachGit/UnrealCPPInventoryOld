@@ -12,7 +12,6 @@
 #include "Components/ActorComponent.h"
 #include "MovingPlatform.generated.h"
 
-#define CATEGORY    "User Set"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALCPPINVENTORY_API UMovingPlatform : public UActorComponent
@@ -50,11 +49,11 @@ private:
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CATEGORY)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = UserSetting)
 	float Height; //Height move is added to Z
 
     
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = CATEGORY)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = UserSetting)
 	UCurveFloat* FloatTimeLine; //Can edit this in IDE
 
 };

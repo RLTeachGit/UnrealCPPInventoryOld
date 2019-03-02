@@ -43,8 +43,12 @@ void	UMyItem::OnAdd_Implementation(UMyInventory* Inventory)
 }
 
 
-FString    UMyItem::GetName_Implementation() //C++ parent implementation
+FString    UMyItem::GetItemName_Implementation() //C++ parent implementation
 {
     return FString("Default Item");
 }
 
+FString    UMyItem::ToString_Implementation() //C++ parent implementation
+{
+	return  FString::Printf(TEXT("%s %dkG"),*GetItemName(),GetWeight()); //Item in Text
+}

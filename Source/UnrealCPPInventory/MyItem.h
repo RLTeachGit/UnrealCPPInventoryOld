@@ -14,6 +14,7 @@ class UMyItem; //Forward reference
 #include "Runtime/Core/Public/Containers/UnrealString.h" //Needed for FString
 #include "MyItem.generated.h"
 
+
 /**
  *
  */
@@ -28,7 +29,7 @@ class UNREALCPPINVENTORY_API UMyItem : public UObject {
 public:
     
     //Get Item own reported Weight
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, BlueprintPure) //Event can be overriden in BP but also called. It does not affect item
     int	GetWeight();	//Can be overidded in BP
 	virtual int GetWeight_Implementation(); //This is the baseclass implementation
 
@@ -38,7 +39,7 @@ public:
 	virtual void ItemTick_Implementation(float DeltaTime); //This is the baseclass implementation
 
     //Called when Item is added to Inventory
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent) //Event is can be overriden
     void	OnAdd(UMyInventory* Inventory); //Can override in BP
 	virtual void	OnAdd_Implementation(UMyInventory* Inventory); //C++ parent
 
@@ -48,12 +49,17 @@ public:
     virtual void    OnRemove_Implementation(); //C++ parent
     
     //Called to get Items reported Name
-    UFUNCTION(BlueprintNativeEvent)
-    FString    GetName(); //Can override this in BP
-    virtual FString    GetName_Implementation(); //C++ parent implementation
+    UFUNCTION(BlueprintNativeEvent, BlueprintPure, BlueprintCallable)
+    FString    GetItemName(); //Can override this in BP
+    virtual FString    GetItemName_Implementation(); //C++ parent implementation
+
+	//Called to get Item as text
+	UFUNCTION(BlueprintNativeEvent, BlueprintPure, BlueprintCallable)
+	FString    ToString(); //Can override this in BP
+	virtual FString    ToString_Implementation(); //C++ parent implementation
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory") //Expose Actor variable in Blueprints
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserSetting) //Expose Actor variable in Blueprints
     AActor* OwningActor; //Pointer to actor who owns this item
     
 	UMyInventory* OwningInventory; //Pointer to Link back to Inventory who owns this item

@@ -12,8 +12,10 @@ class UMyItem; //Forward reference
 #include <Runtime/Engine/Classes/Engine/Engine.h> //Needed for GEngine->AddOnScreenDebugMessage()
 #include "GameFramework/Actor.h" //Now needed as Unreal has gone to a minimal include system
 #include "MyItem.h"
-#include "Components/ActorComponent.h"
+#include "Runtime/Core/Public/Internationalization/Text.h" //Needed for FText
+#include "Runtime/Core/Public/Containers/UnrealString.h" //Needed for FString#include "Components/ActorComponent.h"
 #include "MyInventory.generated.h"
+
 
 
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -35,20 +37,27 @@ public:
 
 	//Added code
 public:
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	UFUNCTION(BlueprintCallable, Category = UserSetting)
     bool AddItem(UMyItem* Item);
 
-    UFUNCTION(BlueprintCallable, Category = "Inventory")
+    UFUNCTION(BlueprintCallable, Category = UserSetting)
     bool RemoveItem(UMyItem* Item);
 
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	UFUNCTION(BlueprintGetter, Category = UserSetting)
     int	 GetWeights();
 
-    UFUNCTION(BlueprintCallable, Category = "Inventory")
+    UFUNCTION(BlueprintGetter, Category = UserSetting)
     int	 GetCount();
 
+
+	//Called to get Items as text
+	UFUNCTION(BlueprintNativeEvent, BlueprintPure, BlueprintCallable)
+	FString    ToString(); //Can override this in BP
+	virtual FString    ToString_Implementation(); //C++ parent implementation
+
+
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory") //Expose Array of items in Blueprints
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserSetting) //Expose Array of items in Blueprints
     TArray <UMyItem*> Items;
 
 	AActor* GetActor();

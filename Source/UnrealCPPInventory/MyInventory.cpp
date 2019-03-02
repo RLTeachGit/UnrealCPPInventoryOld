@@ -76,3 +76,18 @@ int	 UMyInventory::GetWeights() {
 AActor* UMyInventory::GetActor() {
 	return Actor;
 }
+
+
+FString	UMyInventory::ToString_Implementation() {
+	FString tItemDescriptions = FString();
+	int tCount = Items.Num();
+	tItemDescriptions.Append(FString::Printf(TEXT("%d Items %dkG\n"),tCount, GetWeights())); //Summary
+	for (auto tItem : Items) {	//Go through the array
+		tItemDescriptions.Append(tItem->ToString());
+		if (--tCount > 0) //if not last item add newline
+		{
+			tItemDescriptions.Append(TEXT("\n"));
+		}
+	}
+	return	tItemDescriptions;
+}
