@@ -2,10 +2,6 @@
 
 #pragma once
 
-class UMyInventory;
-class UMyItem; //Forward reference
-
-
 #include "MyInventory.h"
 #include "GameFramework/Actor.h" //Now needed as Unreal has gone to a minimal include system
 #include "CoreMinimal.h"

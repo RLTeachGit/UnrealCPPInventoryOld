@@ -4,8 +4,6 @@
 
 
 
-class UMyInventory;
-class UMyItem; //Forward reference
 
 #include "CoreMinimal.h"
 #include <EngineGlobals.h> //Needed for GEngine->AddOnScreenDebugMessage()
@@ -60,6 +58,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserSetting) //Expose Array of items in Blueprints
     TArray <UMyItem*> Items;
 
+	UFUNCTION(BlueprintGetter, Category = UserSetting)
 	AActor* GetActor();
 
 protected: //Internal variables

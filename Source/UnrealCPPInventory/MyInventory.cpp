@@ -1,5 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+class UMyInventory;
+class UMyItem; //Forward reference
 
 
 #include "MyInventory.h"
