@@ -29,4 +29,19 @@ public:
 	UFUNCTION()
 	void OnOverlap(AActor * MyActor, AActor* OtherActor);
 
+	UFUNCTION(BlueprintCallable)
+	void OnSwitch(bool State = true);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = User)
+	float	Force = 1000.0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void    Activated(); //Can override this in BP
+	virtual void    Activated_Implementation(); //C++ parent implementation
+
+
+
+private:
+	bool	IsOn;
+
 };

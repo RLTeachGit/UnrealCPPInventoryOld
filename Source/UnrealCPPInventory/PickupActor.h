@@ -27,4 +27,5 @@ public:
 	UFUNCTION()
 	void OnOverlap(AActor * MyActor, AActor* OtherActor);
 	
+
 };

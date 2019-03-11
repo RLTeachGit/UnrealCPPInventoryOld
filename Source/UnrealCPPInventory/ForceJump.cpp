@@ -10,7 +10,7 @@
 UForceJump::UForceJump()
 {
 	PrimaryComponentTick.bCanEverTick = true; //Allow tick
-
+	OnSwitch();
 }
 
 
@@ -36,9 +36,22 @@ void UForceJump::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 //Will be called when box is overlapped
 void UForceJump::OnOverlap(AActor * MyActor, AActor * OtherActor)
 {
+	if (!IsOn) return;
+
 	ACharacter* tCharacter = Cast<ACharacter>(OtherActor); //Make sure we are character, will return null if not
 	if (IsValid(tCharacter))
 	{
-		tCharacter->LaunchCharacter(FVector::UpVector * 1000.0, false, false);
+		tCharacter->LaunchCharacter(FVector::UpVector * Force, false, false);
+		Activated();
 	}
+}
+
+void UForceJump::OnSwitch(bool State)
+{
+	IsOn = State;
+}
+
+void UForceJump::Activated_Implementation()
+{
+	
 }
